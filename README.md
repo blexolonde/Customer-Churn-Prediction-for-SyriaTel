@@ -1,211 +1,160 @@
-# **Customer Churn Prediction for SyriaTel**
+# **SyriaTel Customer Churn Prediction**
 
-I created this project to predict **customer churn** for **SyriaTel**, a leading telecommunications company, using machine learning techniques. By identifying patterns in customer behavior, I aim to develop strategies that reduce churn and enhance customer retention.  
+## **Project Goal**  
+The goal of this project is to predict customer churn for **SyriaTel**, a telecommunications company, in order to take proactive measures to reduce customer attrition and improve retention strategies.
 
----
-
-## **Table of Contents**
-
+## **Table of Contents**  
 - [Project Overview](#project-overview)  
-- [Technologies Used](#technologies-used)  
-- [Dataset Overview](#dataset-overview)  
-- [Steps Taken](#steps-taken)  
-  - [1. Data Preprocessing](#1-data-preprocessing)  
-  - [2. Feature Engineering](#2-feature-engineering)  
-  - [3. Model Training](#3-model-training)  
-  - [4. Model Evaluation](#4-model-evaluation)  
-- [Evaluation Metrics](#evaluation-metrics)  
-- [Model Comparison & Hyperparameter Tuning](#model-comparison--hyperparameter-tuning)  
-- [Confusion Matrix (XGBoost)](#confusion-matrix-xgboost)  
-- [Example Prediction](#example-prediction)  
+- [Dataset](#dataset)  
+- [Data Preparation](#data-preparation)  
+- [Modeling Approach](#modeling-approach)  
+- [Evaluation & Optimization](#evaluation--optimization)  
+- [Key Insights](#key-insights)  
+- [Business Recommendations](#business-recommendations)  
+- [Next Steps](#next-steps)  
 - [How to Run](#how-to-run)  
-- [Future Work](#future-work)  
-- [Conclusion](#conclusion)  
 
 ---
 
-## **Project Overview**
+## **Project Overview**  
+Customer churn is a significant problem for telecom companies, causing **substantial revenue loss**. This project creates a **machine learning model** to predict churn based on customer behavior, call usage, and service interactions.  
 
-SyriaTel faces a major business challenge—**customer churn**. By predicting which customers are likely to leave, the company can proactively engage them with personalized retention strategies. In this project, I use machine learning models to classify customer churn based on historical data.  
+### **Why It Matters**  
+- **Losing customers** is costly; retention is more cost-effective than acquiring new ones.  
+- **Early detection** of churn helps in offering targeted promotions, discounts, or improved services to retain customers.  
 
-### **Objective**
-
-- Build a **churn prediction model** that identifies customers likely to leave.  
-- Train and compare **classification models** to evaluate their performance and provide actionable insights.  
-- Optimize models using **hyperparameter tuning** and **cross-validation**.  
-
----
-
-## **Technologies Used**
-
-I used the following tools and libraries to build this project:  
-
-- **Python**: The main programming language for data manipulation, modeling, and analysis.  
-- **Libraries**:  
-  - `pandas`, `numpy`: Data manipulation and analysis.  
-  - `scikit-learn`: Machine learning and model evaluation.  
-  - `matplotlib`, `seaborn`: Data visualization.  
-  - `imbalanced-learn`: Handling imbalanced data (SMOTE).  
-  - `XGBoost`: A powerful gradient boosting model.  
-  - `GridSearchCV`: Hyperparameter tuning via cross-validation.  
+### **Key Outcomes**  
+- Best-performing model: **XGBoost (AUC-ROC: 0.85)**  
+- Most predictive features: **Total Day Minutes, Customer Service Calls, Total Intl Minutes**  
+- Strategic recommendations for reducing churn  
 
 ---
 
-## **Dataset Overview**
+## **Dataset**  
+📁 **Source:** SyriaTel customer data (`bigml.csv`)  from kaggle
 
-I worked with a dataset containing **3,333 customer records** and **21 features**. Key features include:  
-
-- **Customer account details**: Account length, area code, service plans.  
-- **Usage statistics**: Total minutes and charges for day, evening, night, and international calls.  
-- **Customer behavior**: Number of customer service calls, voice mail usage, etc.  
-- **Target variable**: `churn` (binary: 1 = churned, 0 = retained).  
-
-### **Dataset Features**
-
-| Feature                     | Description                                  |
-|-----------------------------|----------------------------------------------|
-| account length              | Length of time the customer has been with SyriaTel |
-| total day minutes           | Total number of minutes the customer spent on calls during the day |
-| total day calls             | Number of calls made during the day |
-| churn                       | Target variable (1 = churned, 0 = retained) |
+### **Features Overview:**  
+- **Usage Data:** `total day minutes`, `total eve minutes`, `total night minutes`, `total intl minutes`  
+- **Customer Service Interaction:** `customer service calls`  
+- **Subscription Plans:** `international plan`, `voice mail plan`  
+- **Demographics:** `state`, `area code`  
+- **Target Variable:** `Churn` (1 = Churned, 0 = Not Churned)  
 
 ---
 
-## **Steps Taken**
+## **Data Preparation**  
+1. **Data Cleaning & Feature Engineering**  
+   - Removed irrelevant columns (`phone number`, `account length`, `area code`)  
+   - Converted categorical variables (`yes/no` plans → binary encoding)  
+   - Checked for missing values & outliers  
 
-### 1. **Data Preprocessing**
+2. **Balancing Classes with SMOTE**  
+   - The dataset had an imbalanced class distribution, so I applied **Synthetic Minority Over-sampling Technique (SMOTE)** to balance the classes.  
 
-I started by loading and cleaning the dataset:  
-
-- **Missing Values**: No missing values found.  
-- **Encoding Categorical Variables**: Features like `state`, `international plan`, and `voice mail plan` were converted into numerical values.  
-- **Feature Scaling**: Applied scaling to numerical features to ensure equal importance for all features during model training.  
-
----
-
-### 2. **Feature Engineering**
-
-I created new features to enhance the model’s predictive power:  
-
-- **Call Rate Features**: I engineered features like `intl_call_rate`, `daytime_call_rate`, and `evening_call_rate` to capture **customer behavior patterns** more effectively.  
-  - **Why?** High international call rates may indicate **loyal business customers**, whereas unusually low call rates could be a **churn risk indicator**.  
-  - These features help **differentiate customer types** and improve model accuracy.  
+3. **Feature Scaling**  
+   - Standardized numerical features using **StandardScaler** to improve model performance.  
 
 ---
 
-### 3. **Model Training**
-
+## **Modeling Approach**  
 I trained and compared four machine learning models:  
 
-1. **Logistic Regression**  
-2. **Decision Tree**  
-3. **Random Forest**  
-4. **XGBoost**  
+| Model                | AUC-ROC Score |
+|----------------------|--------------|
+| Logistic Regression  | 0.78         |
+| Decision Tree        | 0.81         |
+| **Random Forest**    | **0.83**     |
+| **XGBoost**          | **0.85** ✅ |
 
-I used **GridSearchCV** to fine-tune the hyperparameters for **Decision Tree**, **Random Forest**, and **XGBoost** to improve model performance.  
-
----
-
-### 4. **Model Evaluation**
-
-I evaluated each model based on **accuracy**, **precision**, **recall**, **F1-score**, and **ROC-AUC**. I also used **confusion matrices** and **ROC curves** to visualize performance.  
-
----
-
-## **Evaluation Metrics**
-
-I assessed the models using the following metrics:  
-
-- **Accuracy**: The ratio of correct predictions to total predictions.  
-- **Precision**: The proportion of positive predictions that are actually correct.  
-- **Recall**: The proportion of actual positives correctly predicted.  
-- **F1-Score**: The harmonic mean of precision and recall, balancing the two.  
-- **AUC-ROC**: The area under the ROC curve, showing how well the model distinguishes between churned and retained customers.  
+### **Best Model:** **XGBoost** (Extreme Gradient Boosting)  
+- Handles complex relationships effectively  
+- Robust to feature importance weighting  
+- Performs well with structured data  
 
 ---
 
-## **Model Comparison & Hyperparameter Tuning**
+## **Evaluation & Optimization**  
+I fine-tuned the classification threshold to improve **recall** and reduce false negatives (incorrectly predicting customers as not churning).
 
-After tuning hyperparameters using **GridSearchCV**, the models performed as follows:  
+| Threshold | Precision | Recall | F1-Score |
+|-----------|----------|--------|----------|
+| **0.30**  | 0.74     | 0.75   | 0.74     |
+| **0.40**  | 0.77     | 0.73   | 0.75 ✅  |
+| **0.50**  | 0.82     | 0.70   | 0.76     |
 
-| Model            | Best Parameters                           | Accuracy | AUC-ROC | Precision | Recall | F1-Score |
-|------------------|-------------------------------------------|----------|---------|-----------|--------|----------|
-| Decision Tree    | `max_depth=10, min_samples_split=2`       | 0.85     | 0.80    | 0.82      | 0.78   | 0.80     |
-| Random Forest    | `n_estimators=100, max_depth=20`         | 0.88     | 0.84    | 0.87      | 0.85   | 0.86     |
-| XGBoost          | `n_estimators=100, learning_rate=0.1`    | 0.90     | 0.87    | 0.89      | 0.88   | 0.89     |
-
----
-
-## **Confusion Matrix (XGBoost)**
-
-The confusion matrix below shows how well the **XGBoost model** classifies customers:  
-
-![Confusion Matrix](Untitled.png)  
+### **Best Threshold:** 0.40  
+- Balanced **precision & recall**  
 
 ---
 
-## **Example Prediction**
+## **Key Insights**  
+### **Top 3 Most Important Features**  
+- **Total Day Minutes:** Customers with higher day-time usage are more likely to churn.  
+- **Customer Service Calls:** Frequent customer support calls indicate dissatisfaction, which is a strong churn predictor.  
+- **Total Intl Minutes:** Customers with high international minutes tend to churn more frequently.  
 
-Here’s how to use the trained XGBoost model to predict churn for a new customer:  
-
-```python
-import pandas as pd
-import joblib  # For loading the trained model
-
-# Load the trained model
-model = joblib.load("xgboost_churn_model.pkl")
-
-# Example new customer data
-new_customer = pd.DataFrame({
-    'account_length': [120],
-    'international_plan': [0],
-    'voice_mail_plan': [1],
-    'total_day_minutes': [200],
-    'total_day_calls': [100],
-    'total_eve_minutes': [150],
-    'total_eve_calls': [80],
-    'total_night_minutes': [180],
-    'total_night_calls': [90],
-    'total_intl_minutes': [10],
-    'total_intl_calls': [5],
-    'customer_service_calls': [2],
-})
-
-# Predict churn probability
-churn_probability = model.predict_proba(new_customer)[:, 1]
-prediction = model.predict(new_customer)
-
-print(f"Churn Probability: {churn_probability[0]:.2f}")
-print(f"Predicted Class: {'Churn' if prediction[0] == 1 else 'Retained'}")
-```
+### **Churners vs Non-Churners Analysis**  
+- **High service usage** doesn’t always lead to retention.  
+- **Frequent complaints correlate with churn** — addressing these could improve loyalty.  
+- **International plan users** have a higher churn rate — special retention efforts are needed.  
 
 ---
 
-## **How to Run**
+## **Business Recommendations**  
+1. **Improve Customer Support**  
+   - Customers making **3+ support calls** are at high risk of churning.  
+   - Implement a **proactive support strategy** where dissatisfied customers are contacted before they leave.  
 
-1. **Clone the Repository:**  
-```bash
-git clone https://github.com/blexolonde/syriatel-churn-prediction.git  
-cd syriatel-churn-prediction  
-```
+2. **Loyalty Discounts for High Usage Customers**  
+   - Offer **discounted plans** for users with high day minutes to encourage retention.  
+   - Reward **long-term customers** with loyalty bonuses.  
 
-2. **Install Dependencies:**  
-```bash
-pip install -r requirements.txt  
-```
-
----
-
-## **Future Work**
-
-- **Ensemble Learning:** Combine the predictions from multiple models.  
-- **Deep Learning:** Experiment with neural networks or advanced models.  
-- **Real-time Data Updates:** Adapt models to changing behavior patterns.  
+3. **Special Retention Offers for Intl Callers**  
+   - Customers with **high international minutes** are more likely to churn.  
+   - Provide **exclusive discounts on international plans** to retain them.  
 
 ---
 
-## **Conclusion**
-
-This project demonstrates how machine learning can be used to predict customer churn in the telecommunications industry. By implementing multiple models, tuning hyperparameters, and evaluating performance thoroughly, I provide actionable insights that can help SyriaTel reduce churn and improve customer retention.  
+## **Next Steps**  
+- Deploy the **XGBoost model** with API integration for **real-time churn prediction**.  
+- Implement **automated alerts** for at-risk customers.  
+- Test **A/B retention strategies** to measure impact.  
 
 ---
+
+## **How to Run**  
+### **Prerequisites**  
+Make sure you have the following installed:  
+- Python 3.8+  
+- Jupyter Notebook  
+- Required libraries:  
+  ```bash
+  pip install pandas numpy scikit-learn xgboost imbalanced-learn matplotlib seaborn
+  ```
+
+### **Steps to Run**  
+1. Clone this repository:  
+   ```bash
+   git clone https://github.com/blexolonde/syriatel-churn-prediction.git
+   cd syriatel-churn-prediction
+   ```
+2. Open Jupyter Notebook:  
+   ```bash
+   jupyter notebook
+   ```
+3. Run **SyriaTel_Churn_Prediction.ipynb** in Jupyter  
+
+---
+
+## **Contributors**  
+**Blex Olonde** - Data Science & Machine Learning  
+📧 Contact: olonde.blex@gmail.com 
+
+---
+
+## **Final Thoughts**  
+This project successfully identifies the key drivers of churn and builds a robust predictive model for SyriaTel. **By implementing proactive retention strategies, SyriaTel can reduce churn and maximize customer lifetime value.**  
+
+---
+
+If you found this project useful, feel free to ⭐ this repo!
