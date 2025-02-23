@@ -1,160 +1,95 @@
-# **SyriaTel Customer Churn Prediction**
+# Customer Churn Prediction for SyriaTel
 
-## **Project Goal**  
-The goal of this project is to predict customer churn for **SyriaTel**, a telecommunications company, in order to take proactive measures to reduce customer attrition and improve retention strategies.
+## Project Overview
+This project aims to predict customer churn for SyriaTel, a telecommunications company. Churn prediction is crucial for reducing customer loss and improving retention strategies. The goal is to build a classification model that identifies at-risk customers before they leave the service.
 
-## **Table of Contents**  
-- [Project Overview](#project-overview)  
-- [Dataset](#dataset)  
-- [Data Preparation](#data-preparation)  
-- [Modeling Approach](#modeling-approach)  
-- [Evaluation & Optimization](#evaluation--optimization)  
-- [Key Insights](#key-insights)  
-- [Business Recommendations](#business-recommendations)  
-- [Next Steps](#next-steps)  
-- [How to Run](#how-to-run)  
+## 📂 Dataset
+The dataset contains customer usage patterns and service-related features. The key target variable is **Churn**, which indicates whether a customer has left the service.
+
+## 🎯 Objective
+- Develop and evaluate machine learning models to predict customer churn.
+- Identify key features that influence churn.
+- Provide actionable insights to mitigate customer churn.
 
 ---
-
-## **Project Overview**  
-Customer churn is a significant problem for telecom companies, causing **substantial revenue loss**. This project creates a **machine learning model** to predict churn based on customer behavior, call usage, and service interactions.  
-
-### **Why It Matters**  
-- **Losing customers** is costly; retention is more cost-effective than acquiring new ones.  
-- **Early detection** of churn helps in offering targeted promotions, discounts, or improved services to retain customers.  
-
-### **Key Outcomes**  
-- Best-performing model: **XGBoost (AUC-ROC: 0.85)**  
-- Most predictive features: **Total Day Minutes, Customer Service Calls, Total Intl Minutes**  
-- Strategic recommendations for reducing churn  
+##  Data Preprocessing
+- **Feature Engineering**: Combined and transformed categorical and numerical features.
+- **Handling Imbalance**: Used **SMOTE (Synthetic Minority Over-sampling Technique)** to address class imbalance.
+- **Encoding & Scaling**: Applied **one-hot encoding** for categorical variables and **MinMax scaling** for numerical features.
 
 ---
+##  Machine Learning Models
+Five classification models were trained and optimized using **hyperparameter tuning**:
 
-## **Dataset**  
-📁 **Source:** SyriaTel customer data (`bigml.csv`)  from kaggle
+| Model                   | Accuracy | Precision | Recall | F1-Score | ROC-AUC |
+|-------------------------|----------|------------|--------|----------|---------|
+| **Random Forest**       | 0.8951   | 0.6233     | 0.6943 | 0.6569   | 0.8625  |
+| **LightGBM**           | 0.8943   | 0.6287     | 0.6580 | 0.6430   | 0.8460  |
+| **XGBoost**            | 0.8688   | 0.5388     | 0.6477 | 0.5882   | 0.8338  |
+| **Decision Tree**      | 0.8148   | 0.4075     | 0.6166 | 0.4907   | 0.7615  |
+| **Logistic Regression** | 0.7031   | 0.3037     | 0.8135 | 0.4423   | 0.8179  |
 
-### **Features Overview:**  
-- **Usage Data:** `total day minutes`, `total eve minutes`, `total night minutes`, `total intl minutes`  
-- **Customer Service Interaction:** `customer service calls`  
-- **Subscription Plans:** `international plan`, `voice mail plan`  
-- **Demographics:** `state`, `area code`  
-- **Target Variable:** `Churn` (1 = Churned, 0 = Not Churned)  
+### Best Hyperparameters for Each Model
+Hyperparameters were chosen using **Grid Search and Random Search** techniques, optimizing for **F1-score and ROC-AUC** to balance precision and recall.
 
----
-
-## **Data Preparation**  
-1. **Data Cleaning & Feature Engineering**  
-   - Removed irrelevant columns (`phone number`, `account length`, `area code`)  
-   - Converted categorical variables (`yes/no` plans → binary encoding)  
-   - Checked for missing values & outliers  
-
-2. **Balancing Classes with SMOTE**  
-   - The dataset had an imbalanced class distribution, so I applied **Synthetic Minority Over-sampling Technique (SMOTE)** to balance the classes.  
-
-3. **Feature Scaling**  
-   - Standardized numerical features using **StandardScaler** to improve model performance.  
-
----
-
-## **Modeling Approach**  
-I trained and compared four machine learning models:  
-
-| Model                | AUC-ROC Score |
-|----------------------|--------------|
-| Logistic Regression  | 0.78         |
-| Decision Tree        | 0.81         |
-| **Random Forest**    | **0.83**     |
-| **XGBoost**          | **0.85** ✅ |
-
-### **Best Model:** **XGBoost** (Extreme Gradient Boosting)  
-- Handles complex relationships effectively  
-- Robust to feature importance weighting  
-- Performs well with structured data  
+- **Logistic Regression**: solver='liblinear', penalty='l1', C=0.1
+  - Chosen to encourage feature selection via L1 regularization and handle multicollinearity.
+- **Decision Tree**: min_samples_split=5, min_samples_leaf=2, max_depth=None
+  - Optimized for better generalization and reduced overfitting.
+- **Random Forest**: n_estimators=500, min_samples_split=2, min_samples_leaf=1, max_depth=None
+  - A higher number of estimators improves stability, while default depth allows deeper trees.
+- **LightGBM**: subsample=0.7, num_leaves=40, n_estimators=500, learning_rate=0.1, boosting_type='gbdt'
+  - Balanced between fast training and preventing overfitting with controlled leaf growth.
+- **XGBoost**: subsample=0.8, n_estimators=500, max_depth=6, learning_rate=0.2
+  - Tuned for optimal feature interactions while maintaining computational efficiency.
 
 ---
+## 📈 Model Evaluation: Confusion Matrices
+Below are the confusion matrices for each model:
 
-## **Evaluation & Optimization**  
-I fine-tuned the classification threshold to improve **recall** and reduce false negatives (incorrectly predicting customers as not churning).
+![Confusion Matrices](Untitled.png)
 
-| Threshold | Precision | Recall | F1-Score |
-|-----------|----------|--------|----------|
-| **0.30**  | 0.74     | 0.75   | 0.74     |
-| **0.40**  | 0.77     | 0.73   | 0.75 ✅  |
-| **0.50**  | 0.82     | 0.70   | 0.76     |
-
-### **Best Threshold:** 0.40  
-- Balanced **precision & recall**  
-
----
-
-## **Key Insights**  
-### **Top 3 Most Important Features**  
-- **Total Day Minutes:** Customers with higher day-time usage are more likely to churn.  
-- **Customer Service Calls:** Frequent customer support calls indicate dissatisfaction, which is a strong churn predictor.  
-- **Total Intl Minutes:** Customers with high international minutes tend to churn more frequently.  
-
-### **Churners vs Non-Churners Analysis**  
-- **High service usage** doesn’t always lead to retention.  
-- **Frequent complaints correlate with churn** — addressing these could improve loyalty.  
-- **International plan users** have a higher churn rate — special retention efforts are needed.  
+###  Interpretation:
+- **Random Forest & LightGBM** performed the best in terms of **F1-score and ROC-AUC**, meaning they balance precision and recall well.
+- **Logistic Regression** has the highest recall, meaning it captures the most churn cases but at the cost of precision.
+- **Decision Tree** and **XGBoost** are decent but slightly underperform compared to the top models.
+- **False Positives & False Negatives**:
+  - **Random Forest & LightGBM** have the lowest false negatives, making them the best candidates for predicting churn.
+  - **Logistic Regression** misclassifies many customers as churn who are not actually leaving.
 
 ---
+## 📉 ROC Curve Analysis
+Below is the ROC Curve comparing model performance:
 
-## **Business Recommendations**  
-1. **Improve Customer Support**  
-   - Customers making **3+ support calls** are at high risk of churning.  
-   - Implement a **proactive support strategy** where dissatisfied customers are contacted before they leave.  
+![ROC Curve](Untitled.png)
 
-2. **Loyalty Discounts for High Usage Customers**  
-   - Offer **discounted plans** for users with high day minutes to encourage retention.  
-   - Reward **long-term customers** with loyalty bonuses.  
-
-3. **Special Retention Offers for Intl Callers**  
-   - Customers with **high international minutes** are more likely to churn.  
-   - Provide **exclusive discounts on international plans** to retain them.  
+###  Interpretation:
+- **Random Forest (AUC = 0.86) and LightGBM (AUC = 0.85)** perform best, showing strong predictive power.
+- **XGBoost (AUC = 0.83)** follows closely, indicating good performance.
+- **Logistic Regression (AUC = 0.82)** has decent performance but struggles with precision.
+- **Decision Tree (AUC = 0.76)** performs the worst, meaning it is less reliable for churn prediction.
 
 ---
-
-## **Next Steps**  
-- Deploy the **XGBoost model** with API integration for **real-time churn prediction**.  
-- Implement **automated alerts** for at-risk customers.  
-- Test **A/B retention strategies** to measure impact.  
-
----
-
-## **How to Run**  
-### **Prerequisites**  
-Make sure you have the following installed:  
-- Python 3.8+  
-- Jupyter Notebook  
-- Required libraries:  
-  ```bash
-  pip install pandas numpy scikit-learn xgboost imbalanced-learn matplotlib seaborn
-  ```
-
-### **Steps to Run**  
-1. Clone this repository:  
-   ```bash
-   git clone https://github.com/blexolonde/syriatel-churn-prediction.git
-   cd syriatel-churn-prediction
-   ```
-2. Open Jupyter Notebook:  
-   ```bash
-   jupyter notebook
-   ```
-3. Run **SyriaTel_Churn_Prediction.ipynb** in Jupyter  
+##  Business Impact & Recommendations
+Based on the findings, the following actions are recommended:
+- **Customer Retention Programs**: Target customers identified as high churn risk with personalized offers or discounts.
+- **Improve Customer Support**: Customers with high service usage variations may require better support.
+- **Feature Optimization**: Focus on the most important features affecting churn to enhance prediction accuracy.
+- **Threshold Tuning**: Adjust classification thresholds to balance false positives and false negatives based on business needs.
 
 ---
-
-## **Contributors**  
-**Blex Olonde** - Data Science & Machine Learning  
-📧 Contact: olonde.blex@gmail.com 
-
----
-
-## **Final Thoughts**  
-This project successfully identifies the key drivers of churn and builds a robust predictive model for SyriaTel. **By implementing proactive retention strategies, SyriaTel can reduce churn and maximize customer lifetime value.**  
+## 🔧 Future Work
+- Incorporate deep learning techniques (e.g., Neural Networks).
+- Use advanced feature selection methods to improve model interpretability.
+- Conduct A/B testing on retention strategies using the model predictions.
 
 ---
+## 📌 Conclusion
+This project successfully developed a robust **customer churn prediction model** using multiple machine learning techniques. **Random Forest and LightGBM** emerged as the best models, providing a strong balance between precision and recall. Future work can focus on further refining predictions and deploying the model into a production environment for real-time monitoring.
 
-If you found this project useful, feel free to ⭐ this repo!
+---
+## 📬 Contact
+For any inquiries or collaboration opportunities, feel free to reach out!
+
+📧 Email: olonde.blex@gmail.com
+🔗 LinkedIn: [blex/olonde]
