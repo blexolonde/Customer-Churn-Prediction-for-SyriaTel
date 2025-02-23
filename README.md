@@ -4,7 +4,17 @@
 This project aims to predict customer churn for **SyriaTel**, a telecommunications company. Churn prediction is crucial for reducing customer loss and improving retention strategies. The goal is to build a classification model that identifies at-risk customers before they leave the service.
 
 ## 📂 Dataset
-The dataset contains customer usage patterns and service-related features. The key target variable is **Churn**, which indicates whether a customer has left the service.
+The dataset, sourced from Kaggle, contains customer records with various attributes such as:
+
+Customer service calls
+
+Call minutes (day, evening, night, international)
+
+International plan usage
+
+Account length and total charge information
+
+Churn status (target variable)
 
 ## 🎯 Objective
 - Develop and evaluate machine learning models to predict customer churn.
