@@ -142,9 +142,9 @@ Below are the confusion matrices for each model:
 ![Confusion Matrices](model_comparison_confusion_matrices.png)
 
 **Key Observations**:
-- **Churn Rate**: The dataset has a relatively low churn rate, with fewer actual churn cases.
-- **False Positives (FP)**: Some models, like Logistic Regression, misclassify customers who stay as churned.
-- **False Negatives (FN)**: Missing customers who actually churn is a risk, especially for business strategy.
+- Best Models: Random Forest and LightGBM show the best performance in minimizing false negatives (i.e., failing to identify churners).
+- Trade-offs in Logistic Regression: Logistic Regression captures more actual churners (high recall) but at the cost of precision (many false positives).
+- Decision Tree & XGBoost: These models perform moderately well but are outperformed by ensemble methods (Random Forest & LightGBM).
 
 ---
 
