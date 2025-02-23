@@ -11,12 +11,12 @@ The dataset is sourced from Kaggle and contains **customer information, usage pa
 The dataset includes the following key features:  
 
 ### **Customer Demographics**  
-- state: The U.S. state where the customer resides.  
-- account length: Duration (in days) the customer has been with the company.  
+- `state`: The U.S. state where the customer resides.  
+- `account length`: Duration (in days) the customer has been with the company.  
 
 ### **Service Plans**  
-- international plan: Whether the customer has an international calling plan (Yes/No).  
-- voice mail plan: Whether the customer has a voicemail plan (Yes/No).  
+- `international plan`: Whether the customer has an international calling plan (Yes/No).  
+- `voice mail plan`: Whether the customer has a voicemail plan (Yes/No).  
 
 ### **Usage Metrics**  
 - number vmail messages: Number of voicemail messages.  
