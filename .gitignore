@@ -1,0 +1,33 @@
+# Ignore all PNG files
+*.png
+
+# Ignore data folder but still keep it locally
+data/
+
+# Jupyter Notebook Checkpoints
+.ipynb_checkpoints/
+
+# Python bytecode files
+__pycache__/
+*.pyc
+*.pyo
+
+# Virtual environment folders
+venv/
+env/
+ENV/
+
+# IDE specific files
+.vscode/
+.idea/
+
+# Log files
+*.log
+
+# Temporary files
+*.swp
+*.swo
+
+# Environment files
+.env
+
