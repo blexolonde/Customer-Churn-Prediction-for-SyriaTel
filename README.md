@@ -193,8 +193,8 @@ To run the notebook, follow these steps:
 1. **Clone the Repository**:
    
 
-git clone https://github.com/your-username/churn-prediction.git
-   cd churn-prediction
+git clone https://github.com/blexolonde//Customer-Churn-Prediction-for-SyriaTel
+   cd Customer-Churn-Prediction-for-SyriaTel
 
 
 
@@ -208,7 +208,7 @@ pip install -r requirements.txt
 3. **Run the Jupyter Notebook**:
    
 
-jupyter notebook churn_prediction.ipynb
+Customer-Churn-Prediction-for-SyriaTel.ipynb
 
 
 
