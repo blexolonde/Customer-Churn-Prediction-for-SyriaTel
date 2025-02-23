@@ -68,11 +68,6 @@ Five classification models were trained and optimized through **hyperparameter t
 - **LightGBM** also performed well but showed slightly lower recall and ROC-AUC.
 - **Logistic Regression** performed the worst, with a significant drop in precision.
 
-### Best Hyperparameters for Each Model
-
-Sure! Here's how you can add the **Hyperparameter Tuning and Rationale** section to your README, right after the **Model Performance Comparison**:
-
----
 
 ### Best Hyperparameters for Each Model
 
