@@ -33,16 +33,19 @@ Churn status (target variable)
 ## 🏆 Machine Learning Models
 Five classification models were trained and optimized using **hyperparameter tuning**:
 
-| Model                   | Accuracy | Precision | Recall | F1-Score | ROC-AUC | Average Precision (AP) |
-|-------------------------|----------|------------|--------|----------|---------|------------------------|
-| **Random Forest**        | 0.8951   | 0.6233     | 0.6943 | 0.6569   | 0.8625  | **0.62**               |
-| **LightGBM**             | 0.8943   | 0.6287     | 0.6580 | 0.6430   | 0.8460  | **0.65**               |
-| **XGBoost**              | 0.8688   | 0.5388     | 0.6477 | 0.5882   | 0.8338  | **0.60**               |
-| **Decision Tree**        | 0.8148   | 0.4075     | 0.6166 | 0.4907   | 0.7615  | **0.50**               |
-| **Logistic Regression**  | 0.7031   | 0.3037     | 0.8135 | 0.4423   | 0.8179  | **0.48**               |
+### Model Performance Comparison:
 
+| Model                        | Accuracy | Precision | Recall | F1-score | ROC-AUC |
+| ---------------------------- | -------- | --------- | ------ | -------- | ------- |
+| Logistic Regression          | 70.3%    | 30.4%     | 81.3%  | 44.2%    | 81.8%   |
+| Decision Tree Classifier     | 82.4%    | 42.3%     | 59.6%  | 49.5%    | 75.2%   |
+| Random Forest Classifier     | 89.7%    | 63.0%     | 68.9%  | 65.8%    | 85.8%   |
+| LightGBM                     | 89.4%    | 62.9%     | 65.8%  | 64.3%    | 84.6%   |
+| XGBoost                      | 86.9%    | 53.9%     | 64.8%  | 58.8%    | 83.4%   |
+
+The **Random Forest model** performed the best with **89.7% accuracy** and the highest **ROC-AUC (85.8%)**, making it the ideal choice for predicting customer churn. LightGBM also performed well, but with slightly lower recall and ROC-AUC. 
 ### Best Hyperparameters for Each Model
-Hyperparameters were chosen using **Grid Search and Random Search** techniques, optimizing for **F1-score and ROC-AUC** to balance precision and recall.
+Hyperparameters were chosen using ** Random Search** techniques, optimizing for **F1-score and ROC-AUC** to balance precision and recall.
 
 - **Logistic Regression**: `solver='liblinear', penalty='l1', C=0.1`
   - Chosen to encourage feature selection via L1 regularization and handle multicollinearity.
@@ -61,15 +64,13 @@ Hyperparameters were chosen using **Grid Search and Random Search** techniques, 
 
 Below are the confusion matrices for each model:
 
-![Confusion Matrices](Untitled.png)
+![Confusion Matrices](model_comparison_confusion_matrices.png)
 
-### 🔍 Interpretation:
-- **Random Forest & LightGBM** performed the best in terms of **F1-score and ROC-AUC**, meaning they balance precision and recall well.
-- **Logistic Regression** has the highest recall, meaning it captures the most churn cases but at the cost of precision.
-- **Decision Tree** and **XGBoost** are decent but slightly underperform compared to the top models.
-- **False Positives & False Negatives**:
-  - **Random Forest & LightGBM** have the lowest false negatives, making them the best candidates for predicting churn.
-  - **Logistic Regression** misclassifies many customers as churn who are not actually leaving.
+Churn Rate is Relatively Low: The number of actual churn cases seems to be lower than non-churn cases, indicating that most customers tend to stay.
+Misclassification Trends:
+False Positives (FP): Some customers are predicted to churn but actually stay, especially in Logistic Regression.
+False Negatives (FN): Some customers who actually churn are missed, which is more dangerous for the business.
+Importance of Reducing False Negatives: False negatives mean losing customers without taking preventive actions—Random Forest & LightGBM perform best in minimizing this.
 
 ---
 
@@ -77,7 +78,7 @@ Below are the confusion matrices for each model:
 
 Below is the **ROC Curve** comparing the performance of all models:
 
-![ROC Curve](Untitled.png)
+![ROC Curve](Roc.png)
 
 ### 🔍 Interpretation:
 - **Random Forest (AUC = 0.86) and LightGBM (AUC = 0.85)** perform best, showing strong predictive power.
@@ -99,7 +100,7 @@ Below is the **ROC Curve** comparing the performance of all models:
 
 Below is the **Precision-Recall Curve** comparing the performance of all models.
 
-![Precision-Recall Curve](Untitled.png)
+![Precision-Recall Curve](precesion.png)
 
 ### 🔍 Interpretation:
 - **LightGBM** achieves the highest **precision-recall trade-off**, meaning it correctly identifies churners with high precision while maintaining a reasonable recall.
@@ -119,10 +120,29 @@ Based on the findings, the following actions are recommended:
 
 ---
 
-## 🔧 Future Work
-- Incorporate deep learning techniques (e.g., Neural Networks).
-- Use advanced feature selection methods to improve model interpretability.
-- Conduct A/B testing on retention strategies using the model predictions.
+## 🏗️ Technologies Used
+
+- **Python** (pandas, numpy, seaborn, matplotlib, scikit-learn, XGBoost, LightGBM)
+- **Jupyter Notebook**
+- **SHAP** (for model interpretability)
+- **GridSearchCV & RandomizedSearchCV** (for hyperparameter tuning)
+
+## 🚀 How to Run the Notebook
+
+```
+   ```
+
+## 📌 Future Work
+
+- Improve model performance with **feature selection** and **ensemble techniques**.
+- Enhance data collection with more customer behavioral metrics.
+
+
+---
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ---
 
@@ -131,6 +151,8 @@ This project successfully developed a robust **customer churn prediction model**
 
 ---
 
+
+
 ## 📬 Contact
 For any inquiries or collaboration opportunities, feel free to reach out!
 
@@ -138,3 +160,6 @@ For any inquiries or collaboration opportunities, feel free to reach out!
 [![LinkedIn Profile](https://th.bing.com/th/id/OIP.EpUtPNFJAX-rfRrKJtYHvgHaD4?rs=1&pid=ImgDetMain)](https://www.linkedin.com/in/blexolonde)
 
 ---
+
+
+
