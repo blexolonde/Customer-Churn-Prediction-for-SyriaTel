@@ -127,7 +127,21 @@ Below is the **ROC Curve** comparing the performance of all models:
 
 ![ROC Curve](ROC.png)
 
+1. **Higher AUC for XGBoost (0.8857) vs. Random Forest (0.8722)**
+   - AUC (Area Under the Curve) represents the model’s ability to separate churners from non-churners.
+   - **XGBoost performs better** since it has a slightly higher AUC.
 
+2. **XGBoost has a Steeper Initial Rise**
+   - The **True Positive Rate (TPR)** increases quickly with a low **False Positive Rate (FPR)**.
+   - This means XGBoost identifies churners **more efficiently and accurately** with fewer false alarms.
+
+3. **Random Forest Lags in Early TPR Gains**
+   - The orange line (Random Forest) starts lower but later catches up.
+   - This means Random Forest **misclassifies more customers initially** before improving at higher thresholds.
+
+4. **Both Models Outperform Random Guessing**
+   - The **dashed diagonal line** represents a random classifier (AUC = 0.5).
+   - Since both AUCs are above 0.85, **both models perform well**, but XGBoost is superior.
 ---
 
 ## Model Evaluation: Precision-Recall Curves
@@ -150,6 +164,8 @@ Below is the **ROC Curve** comparing the performance of all models:
 
 
 Given the business need to accurately detect potential churners (minimizing false negatives), <em>XGBoost<em> was chosen as the final model due to its superior precision-recall balance
+
+---
 
 ## 🚀 Business Impact & Recommendations
 
