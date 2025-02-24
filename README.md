@@ -1,6 +1,6 @@
 # Customer Churn Prediction for SyriaTel
 
-## 📌 Project Overview
+##  Project Overview
 
 This project focuses on predicting customer churn for **SyriaTel**, a telecommunications company. Churn prediction is essential for reducing customer loss and improving retention strategies. The goal is to build a classification model that can identify at-risk customers before they leave the service.
 
@@ -33,7 +33,7 @@ The dataset includes the following key features:
 
 ---
 
-## 🎯 Objective
+##  Objective
 
 - Develop and evaluate machine learning models to predict customer churn.
 - Identify key features that influence churn.
@@ -41,7 +41,7 @@ The dataset includes the following key features:
 
 ---
 
-## 📊 Data Preprocessing
+##  Data Preprocessing
 
 - **Feature Engineering**: Transformed and combined categorical and numerical features to improve model performance.
 - **Handling Class Imbalance**: Applied **SMOTE (Synthetic Minority Over-sampling Technique)** to address class imbalance and prevent the model from favoring the majority class.
@@ -49,7 +49,7 @@ The dataset includes the following key features:
 
 ---
 
-## 🏆 Machine Learning Models
+##  Machine Learning Models
 To find the best model:
 
 ## Baseline Model Training
@@ -104,7 +104,7 @@ Below are the confusion matrices for each model:
  
 1. **True Negatives (TN: 563)**  
    - These are customers who did **not churn**, and the model correctly predicted them as **not churning**.  
-   - ✅ **Good for business** since we don't waste retention efforts on these customers.  
+   -  **Good for business** since we don't waste retention efforts on these customers.  
 
 2. **False Positives (FP: 8)**  
    - These are customers who **did not churn**, but the model predicted them as **churners**.  
@@ -116,7 +116,7 @@ Below are the confusion matrices for each model:
 
 4. **True Positives (TP: 69)**  
    - These are customers who **actually churned**, and the model correctly predicted them.  
-   - ✅ **Critical for retention efforts** since we can now target these customers with offers or support to prevent churn.  
+   -  **Critical for retention efforts** since we can now target these customers with offers or support to prevent churn.  
 
 ---
 
@@ -167,7 +167,7 @@ Given the business need to accurately detect potential churners (minimizing fals
 
 ---
 
-## 🚀 Business Impact & Recommendations
+##  Business Impact & Recommendations
 
 1. **Retention Strategy Optimization**:
    - Focus retention efforts on customers with high churn probability (as identified by the model).
@@ -189,7 +189,7 @@ Given the business need to accurately detect potential churners (minimizing fals
 
 ---
 
-## 🚀 How to Run the Notebook
+##  How to Run the Notebook
 
 To run the notebook, follow these steps:
 
@@ -219,7 +219,7 @@ Ensure you have all dependencies installed. If you encounter any issues, feel fr
 
 ---
 
-## 📌 Future Work
+##  Future Work
 
 - Enhance the model with **feature selection** and **ensemble techniques**.
 - Collect more behavioral data for better predictions and insights into customer churn.
@@ -233,7 +233,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ---
 
-## 📌 Conclusion
+##  Conclusion
 
 This project developed a robust **customer churn prediction model** using multiple machine learning algorithms. **Random Forest** and **xgboost** emerged as the best models for churn prediction, showing strong performance across key metrics. With further refinement and deployment, this model will assist SyriaTel in reducing churn and improving customer retention strategies.
 
