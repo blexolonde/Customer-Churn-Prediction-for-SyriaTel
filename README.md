@@ -98,6 +98,8 @@ Below is the **ROC Curve** comparing the performance of all models:
 
 ---
 
+Given the business need to accurately detect potential churners (minimizing false negatives), <em>XGBoost<em> was chosen as the final model due to its superior precision-recall balance
+
 ## 🚀 Business Impact & Recommendations
 
 1. **Retention Strategy Optimization**:
