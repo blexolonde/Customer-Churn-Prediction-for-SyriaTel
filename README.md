@@ -51,81 +51,21 @@ The dataset includes the following key features:
 
 ## 🏆 Machine Learning Models
 
-Five classification models were trained and optimized through **hyperparameter tuning**. Here is a comparison of model performance:
+## **Machine Learning Models Used**
+The following models were trained and evaluated:
+1. **Random Forest Classifier**
+2. **XGBoost Classifier** (Best-performing model)
 
-### Model Performance Comparison:
-
-| Model                        | Accuracy | Precision | Recall | F1-score | ROC-AUC |
-| ---------------------------- | -------- | --------- | ------ | -------- | ------- |
-| Logistic Regression          | 70.3%    | 30.4%     | 81.3%  | 44.2%    | 81.8%   |
-| Decision Tree Classifier     | 82.4%    | 42.3%     | 59.6%  | 49.5%    | 75.2%   |
-| Random Forest Classifier     | 89.7%    | 63.0%     | 68.9%  | 65.8%    | 85.8%   |
-| LightGBM                     | 89.4%    | 62.9%     | 65.8%  | 64.3%    | 84.6%   |
-| XGBoost                      | 86.9%    | 53.9%     | 64.8%  | 58.8%    | 83.4%   |
-
-**Key Insights**:
-- The **Random Forest model** performed the best with **89.7% accuracy** and the highest **ROC-AUC (85.8%)**, making it the ideal choice for predicting customer churn.
-- **LightGBM** also performed well but showed slightly lower recall and ROC-AUC.
-- **Logistic Regression** performed the worst, with a significant drop in precision.
-
-
-### Best Hyperparameters for Each Model
-
-Hyperparameters were selected using **Random Search** optimization, aiming to balance **precision, recall, and F1-score**:
-
-- **Logistic Regression**: solver='liblinear', penalty='l1', C=0.1
-- **Decision Tree**: min_samples_split=5, min_samples_leaf=2, max_depth=None
-- **Random Forest**: n_estimators=500, min_samples_split=2, min_samples_leaf=1, max_depth=None
-- **LightGBM**: subsample=0.7, num_leaves=40, n_estimators=500, learning_rate=0.1, boosting_type='gbdt'
-- **XGBoost**: subsample=0.8, n_estimators=500, max_depth=6, learning_rate=0.2
-
-### Hyperparameter Tuning and Rationale
-
-I improved the models performance by selecting the best configuration for each algorithm. Below are the hyperparameters tuned for each model along with the rationale behind their selection.
-
-#### 1. **Logistic Regression**
-   **Hyperparameters**:
-   - `C`: Regularization strength, where smaller values mean more regularization. We tested values from **0.001 to 100** to balance model complexity and overfitting.
-   - `penalty`: Regularization type, either `l1` or `l2`. `L1` encourages sparsity (useful for feature selection), while `L2` helps with stability and performance when using many features. We chose both options to evaluate which works best for the dataset.
-   - `solver`: The solver used for optimization. We selected `liblinear` as it's efficient for smaller datasets and supports `l1` regularization.
-
-   **Reasoning**: The goal was to balance regularization and overfitting, while ensuring the logistic regression model can effectively handle the features. The `liblinear` solver is a good choice when the dataset is relatively small to medium-sized.
-
-#### 2. **Decision Tree Classifier**
-   **Hyperparameters**:
-   - `max_depth`: Controls the depth of the tree. Testing values **3, 6, 10, None** allowed us to see if limiting the depth prevents overfitting while maintaining predictive power.
-   - `min_samples_split`: Minimum samples required to split an internal node. We tested **2, 5, and 10** to prevent the tree from becoming too sensitive to small splits.
-   - `min_samples_leaf`: Minimum samples required to be at a leaf node. We chose **1, 2, and 4** to avoid overfitting and allow for better generalization.
-
-   **Reasoning**: The decision tree is prone to overfitting, so hyperparameters were chosen to control the tree's complexity. Limiting the depth and controlling the leaf nodes ensures that the tree remains interpretable and robust.
-
-#### 3. **Random Forest Classifier**
-   **Hyperparameters**:
-   - `n_estimators`: The number of trees in the forest. We tried **100, 300, 500** to balance computational efficiency and performance. More trees often improve accuracy but also increase computation.
-   - `max_depth`: The maximum depth of each tree. We used **3, 6, 10, None** to prevent overfitting and improve generalization.
-   - `min_samples_split`: Minimum number of samples required to split an internal node, with values **2, 5, 10** to ensure stability.
-   - `min_samples_leaf`: Minimum number of samples required to be at a leaf node, using values **1, 2, 4** to reduce model overfitting.
-
-   **Reasoning**: Random Forest benefits from a large number of estimators. The hyperparameters were chosen to strike a balance between model performance and computational cost, with a focus on limiting overfitting.
-
-#### 4. **XGBoost**
-   **Hyperparameters**:
-   - `n_estimators`: Number of boosting rounds. We tested **100, 300, 500** to evaluate the trade-off between computation time and model performance.
-   - `max_depth`: Controls the maximum depth of a tree. We selected **3, 6, and 10** to manage overfitting while keeping the model robust.
-   - `learning_rate`: Step size shrinking, set to **0.01, 0.1, and 0.2** to prevent overfitting and improve convergence.
-   - `subsample`: Proportion of data used for training each tree. We tested **0.7, 0.8, and 1.0** to control variance.
-
-   **Reasoning**: XGBoost is known for its high performance, so these hyperparameters were chosen to fine-tune its ability to prevent overfitting, balance bias and variance, and ensure faster convergence without sacrificing accuracy.
-
-#### 5. **LightGBM**
-   **Hyperparameters**:
-   - `n_estimators`: Number of boosting rounds. We used **100, 300, and 500** to balance performance and efficiency.
-   - `learning_rate`: Step size used for gradient descent. Values **0.01, 0.1, and 0.2** were tested to minimize overfitting.
-   - `boosting_type`: Type of boosting algorithm, with options **'gbdt'** (Gradient Boosting Decision Tree) and **'dart'** (Dropouts meet Multiple Additive Regression Trees). We evaluated both to see which one performs better with the given dataset.
-   - `num_leaves`: The number of leaves in each tree, with values **20, 31, 40** to control tree complexity.
-   - `subsample`: Fraction of data used for training each tree, tested at **0.7, 0.8, 1.0** to avoid overfitting.
-
-   **Reasoning**: LightGBM is designed for speed and efficiency. The hyperparameters were chosen to enhance the model's predictive capabilities while controlling overfitting. The choice of boosting type was crucial to see whether 'dart' could outperform 'gbdt' on this dataset.
+### **Performance Metrics**
+- **ROC-AUC Score**: Measures model discrimination between churners and non-churners.
+  - **XGBoost AUC:** 0.8857
+  - **Random Forest AUC:** 0.8722
+- **Confusion Matrix** (for XGBoost):
+  - True Positives: **69** (Churners correctly identified)
+  - False Positives: **8** (Non-churners incorrectly classified as churners)
+  - True Negatives: **563** (Correctly identified non-churners)
+  - False Negatives: **27** (Churners incorrectly classified as non-churners)
+- **Precision-Recall Curve**: XGBoost demonstrated better precision and recall, making it the preferred model.
 
 
 ---
@@ -137,9 +77,7 @@ Below are the confusion matrices for each model:
 ![Confusion Matrices](model_comparison_confusion_matrices.png)
 
 **Key Observations**:
-- Best Models: Random Forest and LightGBM show the best performance in minimizing false negatives (i.e., failing to identify churners).
-- Trade-offs in Logistic Regression: Logistic Regression captures more actual churners (high recall) but at the cost of precision (many false positives).
-- Decision Tree & XGBoost: These models perform moderately well but are outperformed by ensemble methods (Random Forest & LightGBM).
+
 
 ---
 
@@ -149,19 +87,12 @@ Below is the **ROC Curve** comparing the performance of all models:
 
 ![ROC Curve](Roc.png)
 
-**Interpretation**:
-- **Random Forest (AUC = 0.86)** and **LightGBM (AUC = 0.85)** perform the best, indicating strong predictive capabilities.
-- **XGBoost (AUC = 0.83)** and **Logistic Regression (AUC = 0.82)** perform reasonably well but are less optimal.
-- **Decision Tree (AUC = 0.76)** shows weaker predictive power, making it less reliable for churn prediction.
 
 ---
 
-## 📊 Model Evaluation: Precision-Recall Curves
+## Model Evaluation: Precision-Recall Curves
 
-### Key Insights:
-- **LightGBM** has the best **precision-recall balance**, with the highest **Average Precision (AP = 0.65)**, meaning it correctly identifies churners with minimal false positives.
-- **Random Forest** follows with an **AP = 0.62**, also providing a good balance between precision and recall.
-- **XGBoost** (AP = 0.60) and **Decision Tree** (lower AP) perform worse in identifying churners with minimal false positives.
+
 
 ![Precision-Recall Curve](precesion.png)
 
@@ -169,11 +100,15 @@ Below is the **ROC Curve** comparing the performance of all models:
 
 ## 🚀 Business Impact & Recommendations
 
-Based on the findings, the following actions are recommended:
-- **Customer Retention Programs**: Focus on high-risk churn customers by offering personalized promotions or discounts.
-- **Improve Customer Support**: Customers with frequent customer service calls or varying usage patterns may need enhanced support.
-- **Feature Optimization**: Further investigate key features such as customer service calls and international plan to improve churn prediction.
-- **Threshold Tuning**: Adjust classification thresholds based on business needs to balance false positives and false negatives.
+1. **Retention Strategy Optimization**:
+   - Focus retention efforts on customers with high churn probability (as identified by the model).
+   - Improve customer experience for users making frequent customer service calls.
+2. **Service Plan Enhancements**:
+   - Customers with **no voice mail plans** have a higher churn risk—consider promotions to encourage adoption.
+   - International plan subscribers show varying churn behavior—optimize offers based on usage trends.
+3. **Predictive Monitoring**:
+   - Deploy the XGBoost model in production to monitor churn risk in real-time.
+   - Set up alerts for customers exceeding churn probability thresholds.
 
 ---
 
@@ -181,7 +116,6 @@ Based on the findings, the following actions are recommended:
 
 - **Python** (pandas, numpy, seaborn, matplotlib, scikit-learn, XGBoost, LightGBM)
 - **Jupyter Notebook**
-- **SHAP** (for model interpretability)
 - **GridSearchCV & RandomizedSearchCV** (for hyperparameter tuning)
 
 ---
@@ -232,7 +166,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 📌 Conclusion
 
-This project developed a robust **customer churn prediction model** using multiple machine learning algorithms. **Random Forest** and **LightGBM** emerged as the best models for churn prediction, showing strong performance across key metrics. With further refinement and deployment, this model can assist SyriaTel in reducing churn and improving customer retention strategies.
+This project developed a robust **customer churn prediction model** using multiple machine learning algorithms. **Random Forest** and **xgboost** emerged as the best models for churn prediction, showing strong performance across key metrics. With further refinement and deployment, this model will assist SyriaTel in reducing churn and improving customer retention strategies.
 
 ---
 
