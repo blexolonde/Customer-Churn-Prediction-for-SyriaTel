@@ -50,42 +50,82 @@ The dataset includes the following key features:
 ---
 
 ## 🏆 Machine Learning Models
+To find the best model:
+
+## Baseline Model Training
+We trained the models using cross-validation and assessed their performance:
+
+Logistic Regression: F1-score: 0.9054
+
+Random Forest: F1-score: 0.9245
+
+XGBoost: F1-score: 0.9508
+
+Since predicting churn correctly is more valuable to the business than just overall accuracy, F1-score and recall were prioritized.
+
+---
+## **Model Hyperparameter Tuning**  
+To identify the most effective model, we optimized **Logistic Regression, Random Forest, and XGBoost** using **GridSearchCV** with **five-fold cross-validation**. The tuning process focused on selecting the best hyperparameters to maximize the **F1-score**, which balances precision and recall—essential for churn prediction where false negatives are costly.  
+
+### **Hyperparameter Choices & Rationale**  
+
+#### **Logistic Regression**  
+- **Regularization Strength (`C`)**: Helps prevent overfitting and ensures better generalization.  
+- **Solver Selection**: Chosen based on dataset characteristics for efficient optimization.  
+- **Penalty Term (`l2`, `elasticnet`)**: Used to handle feature collinearity and encourage sparsity when needed.  
+
+#### **Random Forest**  
+- **Number of Trees (`n_estimators`)**: More trees improve performance but increase computation time.  
+- **Tree Depth (`max_depth`)**: Limits model complexity to prevent overfitting.  
+- **Minimum Samples per Split (`min_samples_split`)**: Controls how the tree grows to ensure meaningful splits.  
+
+#### **XGBoost**  
+- **Number of Boosting Rounds (`n_estimators`)**: Determines the number of iterations for learning.  
+- **Learning Rate (`learning_rate`)**: Adjusts step size to balance convergence speed and accuracy.  
+- **Tree Depth (`max_depth`)**: Controls model complexity to balance bias and variance.  
+
+After hyperparameter tuning, the best models were selected based on their **F1-score on the validation set**
+
 
 ## **Machine Learning Models Used**
-The following models were trained and evaluated:
+These best models were trained and evaluated:
 1. **Random Forest Classifier**
 2. **XGBoost Classifier** (Best-performing model)
 
-### **Performance Metrics**
-- **ROC-AUC Score**: Measures model discrimination between churners and non-churners.
-  - **XGBoost AUC:** 0.8857
-  - **Random Forest AUC:** 0.8722
-- **Confusion Matrix** (for XGBoost):
-  - True Positives: **69** (Churners correctly identified)
-  - False Positives: **8** (Non-churners incorrectly classified as churners)
-  - True Negatives: **563** (Correctly identified non-churners)
-  - False Negatives: **27** (Churners incorrectly classified as non-churners)
-- **Precision-Recall Curve**: XGBoost demonstrated better precision and recall, making it the preferred model.
-
-
----
 
 ## 📈 Model Evaluation: Confusion Matrices
 
 Below are the confusion matrices for each model:
 
-![Confusion Matrices](model_comparison_confusion_matrices.png)
+![Confusion Matrices](Confusion _matrx.png)
 
 **Key Observations**:
+ **Best Model for SyriaTel’s Churn Prediction: XGBoost**  
+ 
+1. **True Negatives (TN: 563)**  
+   - These are customers who did **not churn**, and the model correctly predicted them as **not churning**.  
+   - ✅ **Good for business** since we don't waste retention efforts on these customers.  
 
+2. **False Positives (FP: 8)**  
+   - These are customers who **did not churn**, but the model predicted them as **churners**.  
+   - ⚠️ **Minor business impact** as we might unnecessarily offer retention discounts to these customers.  
+
+3. **False Negatives (FN: 27)**  
+   - These are customers who **actually churned**, but the model **failed to detect them**.  
+   - ❌ **Biggest concern** because these customers leave without any intervention.  
+
+4. **True Positives (TP: 69)**  
+   - These are customers who **actually churned**, and the model correctly predicted them.  
+   - ✅ **Critical for retention efforts** since we can now target these customers with offers or support to prevent churn.  
 
 ---
+
 
 ## 📉 ROC Curve Analysis
 
 Below is the **ROC Curve** comparing the performance of all models:
 
-![ROC Curve](Roc.png)
+![ROC Curve](ROC.png)
 
 
 ---
@@ -94,9 +134,20 @@ Below is the **ROC Curve** comparing the performance of all models:
 
 
 
-![Precision-Recall Curve](precesion.png)
+![Precision-Recall Curve](PRC.png)
 
----
+1. **XGBoost Outperforms Random Forest**  
+   - XGBoost maintains **higher precision at every recall level** compared to Random Forest.  
+   - This means XGBoost is better at identifying churners while keeping false positives low.  
+
+2. **XGBoost Retains High Precision Even at High Recall**  
+   - In the **0.6 to 0.9 recall range**, XGBoost has significantly higher precision.  
+   - This is crucial for SyriaTel because we want to catch as many churners as possible **without misclassifying too many loyal customers**.  
+
+3. **Random Forest Drops in Precision Quickly**  
+   - The orange curve shows that as recall increases, precision decreases much faster.  
+   - This suggests that Random Forest is making more **false positive churn predictions**, which could lead to wasted retention resources.  
+
 
 Given the business need to accurately detect potential churners (minimizing false negatives), <em>XGBoost<em> was chosen as the final model due to its superior precision-recall balance
 
