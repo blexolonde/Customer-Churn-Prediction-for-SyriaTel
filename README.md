@@ -1,12 +1,12 @@
 # Customer Churn Prediction for SyriaTel
-
+![churn img](churn.png)
 ##  Project Overview
 
 This project focuses on predicting customer churn for **SyriaTel**, a telecommunications company. Churn prediction is essential for reducing customer loss and improving retention strategies. The goal is to build a classification model that can identify at-risk customers before they leave the service.
 
 ## 📂 Dataset
 
-The dataset is sourced from Kaggle and contains **customer information, usage patterns, and churn labels**. It includes **demographics, service plan details, call usage statistics, and customer service interactions**. The target variable is **"churn"**, which indicates whether a customer has left the company (1 = churned, 0 = stayed).  
+The data  is about [Telecom ](https://www.kaggle.com/becksddf/churn-in-telecoms-dataset) from Kaggle. It contains **customer information, usage patterns, and churn labels**. It includes **demographics, service plan details, call usage statistics, and customer service interactions**. The target variable is **"churn"**, which indicates whether a customer has left the company (1 = churned, 0 = stayed).  
 
 The dataset includes the following key features:  
 
