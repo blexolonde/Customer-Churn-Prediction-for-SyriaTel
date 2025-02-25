@@ -159,7 +159,7 @@ Below is the **ROC Curve** comparing the performance of all models:
    - This is crucial for SyriaTel because we want to catch as many churners as possible **without misclassifying too many loyal customers**.  
 
 3. **Random Forest Drops in Precision Quickly**  
-   - The orange curve shows that as recall increases, precision decreases much faster.  
+   - The  curve shows that as recall increases, precision decreases much faster.  
    - This suggests that Random Forest is making more **false positive churn predictions**, which could lead to wasted retention resources.  
 
 
