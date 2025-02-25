@@ -197,7 +197,7 @@ To run the notebook, follow these steps:
    
 
 git clone https://github.com/blexolonde//Customer-Churn-Prediction-for-SyriaTel
-   cd Customer-Churn-Prediction-for-SyriaTel
+  
 
 
 
